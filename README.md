@@ -8,9 +8,19 @@ and share as real audio files.
 <p align="center">
   <img src="docs/screenshots/library.png" width="250" alt="Library">
   &nbsp;
-  <img src="docs/screenshots/search.png" width="250" alt="YouTube search">
+  <img src="docs/screenshots/now-playing.png" width="250" alt="Now Playing">
+  &nbsp;
+  <img src="docs/screenshots/youtube-search.png" width="250" alt="YouTube search results">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/library-search.png" width="250" alt="Searching the library by artist">
   &nbsp;
   <img src="docs/screenshots/settings.png" width="250" alt="Settings">
+</p>
+
+<p align="center">
+  <sub>Library · Now Playing · YouTube search · Library search · Settings</sub>
 </p>
 
 ## Features
