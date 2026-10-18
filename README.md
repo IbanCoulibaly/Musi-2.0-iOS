@@ -63,7 +63,7 @@ live on the phone and play offline.
 ## Project layout
 
 ```
-Random/                 iOS app source
+SaucyMusi/              iOS app source
 ├── SaucyMusiApp.swift  App entry point
 ├── Views/              Home (now playing), Library, Playlists, Artists, YouTube search, Settings
 ├── Services/           AudioManager, storage, metadata parsing, artist lookup, show catalog
@@ -71,11 +71,12 @@ Random/                 iOS app source
 ├── Design/             Typography, theming, video wallpaper
 ├── Assets.xcassets/    App icon and images
 ├── Fonts/              Ubuntu font family
-└── Resources/          Wallpaper video
-RandomTests/            Unit tests
-RandomUITests/          UI tests
+├── Resources/          Wallpaper video
+└── PreviewContent/     SwiftUI preview assets
+SaucyMusiTests/         Unit tests
+SaucyMusiUITests/       UI tests
 Server/                 Flask + yt-dlp audio server (see Server/README.md)
-Config/                 Example config files
+Config/                 Info.plist and example secrets
 ```
 
 ## Getting started
@@ -89,10 +90,10 @@ Config/                 Example config files
 ### 1. Add your API key
 
 ```bash
-cp Config/Secrets.swift.example Random/Services/Secrets.swift
+cp Config/Secrets.swift.example SaucyMusi/Services/Secrets.swift
 ```
 
-Then open `Random/Services/Secrets.swift` and paste in your key. The file is
+Then open `SaucyMusi/Services/Secrets.swift` and paste in your key. The file is
 git-ignored, so the key stays on your machine.
 
 ### 2. Start the server
@@ -104,12 +105,12 @@ cd Server
 
 The script sets up its own virtual environment on first run and prints the
 server's local network address (port `5000`). To keep it running in the
-background on macOS, edit the paths in `Server/com.music.server.plist` and load
+background on macOS, edit the paths in `Server/com.saucymusi.server.plist` and load
 it with `launchctl`. More detail in [Server/README.md](Server/README.md).
 
 ### 3. Run the app
 
-1. Open `Musi0.2.xcodeproj` in Xcode.
+1. Open `SaucyMusi.xcodeproj` in Xcode.
 2. Select your own team under **Signing & Capabilities**.
 3. Build and run on an iPhone or the simulator.
 4. In the app, open **Settings → Audio Server** and enter the address the

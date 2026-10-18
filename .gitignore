@@ -9,7 +9,7 @@ xcuserdata/
 *.xcodeproj.backup/
 
 # Secrets (copy Config/Secrets.swift.example)
-Random/Services/Secrets.swift
+SaucyMusi/Services/Secrets.swift
 
 # Python
 __pycache__/
