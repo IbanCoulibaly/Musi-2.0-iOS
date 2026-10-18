@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+*.xcodeproj.backup/
+
+# Secrets (copy Config/Secrets.swift.example)
+Random/Services/Secrets.swift
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors
+.vscode/
