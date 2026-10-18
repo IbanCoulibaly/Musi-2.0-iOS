@@ -104,7 +104,7 @@ cd Server
 ```
 
 The script sets up its own virtual environment on first run and prints the
-server's local network address (port `5000`). To keep it running in the
+server's local network address (port `5001`). To keep it running in the
 background on macOS, edit the paths in `Server/com.saucymusi.server.plist` and load
 it with `launchctl`. More detail in [Server/README.md](Server/README.md).
 
@@ -114,7 +114,7 @@ it with `launchctl`. More detail in [Server/README.md](Server/README.md).
 2. Select your own team under **Signing & Capabilities**.
 3. Build and run on an iPhone or the simulator.
 4. In the app, open **Settings → Audio Server** and enter the address the
-   server printed, e.g. `http://192.168.1.20:5000`.
+   server printed, e.g. `http://192.168.1.20:5001`.
 
 ## Tech stack
 

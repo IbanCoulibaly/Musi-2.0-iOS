@@ -40,9 +40,9 @@ cd Server
 
 Use `./start_server.sh` for manual starts so the required dependencies stay current.
 
-The server will start on `http://0.0.0.0:5000` and will be accessible from your local network.
+The server will start on `http://0.0.0.0:5001` and will be accessible from your local network.
 
 #### Connect the iPhone app
 
 The server prints its local-network address when it starts. Enter that address,
-including `http://` and port `5000`, in the app’s Settings → Audio Server field.
+including `http://` and port `5001`, in the app’s Settings → Audio Server field.
