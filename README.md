@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="SaucyMusi/Assets.xcassets/AppIcon.appiconset/icon-ios-1024x1024.png" width="120" alt="saucyMusi app icon">
-</p>
-
 <h1 align="center">saucyMusi</h1>
 
 <p align="center">
