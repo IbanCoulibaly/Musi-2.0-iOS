@@ -46,3 +46,14 @@ The server will start on `http://0.0.0.0:5001` and will be accessible from your 
 
 The server prints its local-network address when it starts. Enter that address,
 including `http://` and port `5001`, in the app’s Settings → Audio Server field.
+
+### Benchmarking
+
+`benchmark.py` times first requests (download from YouTube), cached repeats,
+time to first audio byte and full transfers for any YouTube URLs you pass:
+
+```bash
+python3 benchmark.py --server http://127.0.0.1:5001 'https://www.youtube.com/watch?v=…'
+```
+
+Results from a real run are in [docs/PERFORMANCE.md](../docs/PERFORMANCE.md#4-audio-server).

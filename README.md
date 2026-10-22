@@ -1,4 +1,16 @@
-# Saucy Musi
+<p align="center">
+  <img src="SaucyMusi/Assets.xcassets/AppIcon.appiconset/icon-ios-1024x1024.png" width="120" alt="saucyMusi app icon">
+</p>
+
+<h1 align="center">saucyMusi</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/iOS-26-000000?logo=apple" alt="iOS 26">
+  <img src="https://img.shields.io/badge/Swift-5-F05138?logo=swift&logoColor=white" alt="Swift 5">
+  <img src="https://img.shields.io/badge/SwiftUI-blue" alt="SwiftUI">
+  <img src="https://img.shields.io/badge/server-Flask%20%2B%20yt--dlp-3776AB?logo=python&logoColor=white" alt="Flask and yt-dlp server">
+  <img src="https://img.shields.io/badge/tests-76%20passing-2ea44f" alt="76 tests passing">
+</p>
 
 A personal iPhone music player built in SwiftUI, paired with a small self-hosted
 Python server. Search YouTube from the app, pull the audio down to your own
@@ -21,6 +33,26 @@ and share as real audio files.
 
 <p align="center">
   <sub>Library · Now Playing · YouTube search · Library search · Settings</sub>
+</p>
+
+## Performance at a glance
+
+Measured on real hardware with real data. Full method, charts and
+recommendations in **[docs/PERFORMANCE.md](docs/PERFORMANCE.md)**.
+
+| | |
+|---|---|
+| Replaying a cached song from the server | **0.8 ms** (first fetch from YouTube: 2.3 s) |
+| Audio quality delivered | AAC 128 kbps, original stream, never re-encoded |
+| Library search per keystroke | **4.5 ms** at 100 songs · **32 ms** at 1,000 |
+| Artist read correctly from 120 real YouTube titles, offline | **71 %**, with **91 %** precision |
+| Test suite | **76 / 76** unit tests passing, plus 6 UI tests |
+
+The biggest open issue the tests found: the 4K wallpaper video keeps the CPU
+busy even when the app is idle. A 1080p version cuts that by ~80 %.
+
+<p align="center">
+  <img src="docs/charts/wallpaper-cost.svg" width="100%" alt="Idle CPU 123% and 589 MB with the 4K video, 26% and 352 MB at 1080p, 0.7% and 276 MB with no video">
 </p>
 
 ## Features
@@ -83,10 +115,11 @@ SaucyMusi/              iOS app source
 ├── Fonts/              Ubuntu font family
 ├── Resources/          Wallpaper video
 └── PreviewContent/     SwiftUI preview assets
-SaucyMusiTests/         Unit tests
-SaucyMusiUITests/       UI tests
-Server/                 Flask + yt-dlp audio server (see Server/README.md)
+SaucyMusiTests/         Unit tests, benchmarks, real-title fixtures
+SaucyMusiUITests/       UI and launch-time tests
+Server/                 Flask + yt-dlp audio server and its benchmark
 Config/                 Info.plist and example secrets
+docs/                   Performance report, charts, screenshots
 ```
 
 ## Getting started
@@ -125,6 +158,17 @@ it with `launchctl`. More detail in [Server/README.md](Server/README.md).
 3. Build and run on an iPhone or the simulator.
 4. In the app, open **Settings → Audio Server** and enter the address the
    server printed, e.g. `http://192.168.1.20:5001`.
+
+## Running the tests
+
+```bash
+xcodebuild test -project SaucyMusi.xcodeproj -scheme SaucyMusi \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
+The `PerformanceBenchmarks` suite prints `BENCH|name|value|unit` lines. Set
+`TEST_RUNNER_BENCH_OUTPUT=/tmp/bench.txt` to collect them in a file. To time
+the server, run `python3 Server/benchmark.py <YouTube URL> …` while it is up.
 
 ## Tech stack
 

@@ -19,3 +19,6 @@ venv/
 
 # Editors
 .vscode/
+
+# Local benchmark output
+Server/benchmark-results.json
