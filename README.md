@@ -47,12 +47,15 @@ recommendations in **[docs/PERFORMANCE.md](docs/PERFORMANCE.md)**.
 | Library search per keystroke | **4.5 ms** at 100 songs · **32 ms** at 1,000 |
 | Artist read correctly from 120 real YouTube titles, offline | **71 %**, with **91 %** precision |
 | Test suite | **76 / 76** unit tests passing, plus 6 UI tests |
+| Idle CPU / memory with the animated wallpaper | **28 % / 339 MB**, down from 136 % / 585 MB |
+| App size | **24 MB**, down from 47 MB |
 
-The biggest open issue the tests found: the 4K wallpaper video keeps the CPU
-busy even when the app is idle. A 1080p version cuts that by ~80 %.
+The benchmarks found that the 4K wallpaper video kept the CPU busy even when
+the app was idle. It now ships at 1080p with the same look: **79 % less idle
+CPU, 42 % less memory, and half the app size.**
 
 <p align="center">
-  <img src="docs/charts/wallpaper-cost.svg" width="100%" alt="Idle CPU 123% and 589 MB with the 4K video, 26% and 352 MB at 1080p, 0.7% and 276 MB with no video">
+  <img src="docs/charts/wallpaper-cost.svg" width="100%" alt="Idle CPU 136% and 585 MB with the old 4K video, 28% and 339 MB with the current 1080p video, 0.7% and 276 MB with no video">
 </p>
 
 ## Features
@@ -113,7 +116,7 @@ SaucyMusi/              iOS app source
 ├── Design/             Typography, theming, video wallpaper
 ├── Assets.xcassets/    App icon and images
 ├── Fonts/              Ubuntu font family
-├── Resources/          Wallpaper video
+├── Resources/          Wallpaper video (1080p loop)
 └── PreviewContent/     SwiftUI preview assets
 SaucyMusiTests/         Unit tests, benchmarks, real-title fixtures
 SaucyMusiUITests/       UI and launch-time tests

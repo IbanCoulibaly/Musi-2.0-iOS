@@ -4,6 +4,10 @@ Measured on **October 21, 2026**. Every number below comes from a real run on
 the hardware listed, not from estimates. The commands to reproduce each one are
 at the end.
 
+> **Update:** the top recommendation from this report has been applied. The
+> wallpaper video now ships at 1080p without an audio track, and the numbers
+> below were re-measured on the new build.
+
 ## Summary
 
 | Area | Result | Verdict |
@@ -15,12 +19,14 @@ at the end.
 | Library search, 1,000 songs | **32 ms** per keystroke | ✅ |
 | Library search, 5,000 songs | **128 ms** per keystroke | ⚠️ noticeable lag |
 | Artist detection offline, 120 real YouTube titles | **71 % correct, 91 % precision** | ⚠️ see misses |
-| Idle CPU with the 4K wallpaper video | **91–173 %** (vs 0.7 % without) | ❌ biggest problem |
-| App size (iPhone build) | **47 MB**, 91 % of it media | ⚠️ |
+| Idle CPU, animated wallpaper | **28 %**, down from 136 % with the old 4K video | ✅ fixed (−79 %) |
+| Idle memory | **339 MB**, down from 585 MB | ✅ fixed (−42 %) |
+| App size (iPhone build) | **24.2 MB**, down from 47.3 MB | ✅ halved |
 
-**Most important finding:** the looping 4K background video costs more than
-every other part of the app combined. Re-encoding it to 1080p keeps the same
-look while cutting idle CPU by ~80 %, memory by ~40 % and its file size by 93 %.
+**Most important finding:** the looping 4K background video cost more than
+every other part of the app combined. Re-encoding it to 1080p kept the same
+look while cutting idle CPU by 79 %, memory by 42 % and the app's size in half.
+That change is now in the app.
 
 ## Test environment
 
@@ -41,24 +47,30 @@ look while cutting idle CPU by ~80 %, memory by ~40 % and its file size by 93 %.
 
 ## 1. Animated wallpaper cost
 
-<img src="charts/wallpaper-cost.svg" alt="Idle CPU 123% and 589 MB with the 4K video, 26% and 352 MB at 1080p, 0.7% and 276 MB with no video" width="100%">
+<img src="charts/wallpaper-cost.svg" alt="Idle CPU 136% and 585 MB with the old 4K video, 28% and 339 MB with the current 1080p video, 0.7% and 276 MB with no video" width="100%">
 
 The app sits idle on the Library screen while the CPU and resident memory of
-its process are sampled once per second for 20 seconds. Three builds of the
-same app, run alternately:
+its process are sampled once per second for 20 seconds. Builds of the same app
+were run alternately, in two sessions: first a 4K / 1080p / no-video A/B test,
+then the final build with the 1080p video against the old 4K build.
 
 | Wallpaper | Idle CPU (avg) | Memory (avg) | Video file |
 |---|---|---|---|
-| 4K H.264, 22.5 Mbps (shipped) | 123 % (runs: 173, 105, 91) | 589 MB | 24.9 MB |
-| 1080p H.264, 1.6 Mbps | 25.5 % (runs: 26.4, 24.5) | 352 MB | **1.8 MB** |
-| No video (still image) | 0.7 % (runs: 0.6, 0.7) | 276 MB | — |
+| 4K H.264, 22.5 Mbps, with audio track (before) | 136 % (runs: 173, 105, 91, 149, 159) | 585 MB | 24.9 MB |
+| **1080p H.264, 1.6 Mbps, no audio (now)** | **28 %** (runs: 26, 25, 36, 26, 27) | **339 MB** | **1.8 MB** |
+| No video (still image, for reference) | 0.7 % (runs: 0.6, 0.7) | 276 MB | — |
 
-The source video is 3840 × 2160, but it is shown behind a phone screen that is
-at most 1320 px wide, so three quarters of every decoded frame is thrown away.
-It also carries an audio track the app never plays (the player is muted).
+The original video was 3840 × 2160, but it is shown behind a phone screen that
+is at most 1320 px wide, so three quarters of every decoded frame was thrown
+away. It also carried an audio track the app never played (the player is
+muted). The 1080p re-encode keeps the same 8.8-second loop and drops the audio.
+
+What's left (28 % vs 0.7 %) is the price of having an animated background at
+all. Pausing it while the app is in the background or in Low Power Mode is the
+next step if battery matters more than the look.
 
 **Launch time is not affected.** In an A/B run of the launch test (10 launches
-each, alternated), the shipped build launched in a median 3.46 s and the
+each, alternated), the 4K build launched in a median 3.46 s and the
 no-video build in 3.97 s, so the video is not the launch bottleneck.
 
 ## 2. Library search
@@ -147,18 +159,18 @@ never been downloaded, then repeated each request 20 times.
 
 <img src="charts/app-size.svg" alt="App size: wallpaper video 24.9 MB, artwork images 18.1 MB, app code 3.2 MB, fonts 1.0 MB" width="68%">
 
-The Release build for iPhone (arm64) is **47.3 MB** uncompressed and 41.9 MB
-zipped. The code itself is only 3.2 MB:
+The Release build for iPhone (arm64) is now **24.2 MB** uncompressed and
+21.0 MB zipped, down from 47.3 MB and 43.9 MB with the 4K video:
 
-| Part | Size | Note |
-|---|---|---|
-| Wallpaper video | 24.9 MB | 4K, 22.5 Mbps, includes an unused audio track |
-| Artwork images | 18.1 MB | 15 photos at 1920 × 1080 or larger, shown cropped to a square |
-| App code | 3.2 MB | |
-| Fonts | 1.0 MB | Ubuntu Regular, Medium, Bold |
+| Part | Now | Before | Note |
+|---|---|---|---|
+| Artwork images | 18.1 MB | 18.1 MB | 15 photos at 1920 × 1080 or larger, shown cropped to a square |
+| App code | 3.2 MB | 3.2 MB | |
+| Wallpaper video | **1.8 MB** | 24.9 MB | 1080p, no audio (was 4K with an unused audio track) |
+| Fonts | 1.0 MB | 1.0 MB | Ubuntu Regular, Medium, Bold |
 
-With the 1080p video and the artwork resized to the 1,200 px square it is
-actually shown at, the app would drop to an estimated **10–12 MB**.
+The artwork is now the largest part. Resized to the ~1,200 px square it is
+actually shown at, the app would drop to an estimated **10 MB**.
 
 ## 6. Build and codebase
 
@@ -173,9 +185,9 @@ actually shown at, the app would drop to an estimated **10–12 MB**.
 
 ## Recommendations, by impact
 
-1. **Re-encode the wallpaper video to 1080p, without audio.** ~80 % less idle
-   CPU, ~40 % less memory, 23 MB smaller app, same look. One ffmpeg command:
-   `ffmpeg -i wallpaper-ink.mp4 -vf scale=1920:1080 -c:v libx264 -crf 23 -an -movflags +faststart out.mp4`
+1. ~~**Re-encode the wallpaper video to 1080p, without audio.**~~ **Done.**
+   79 % less idle CPU, 42 % less memory, 23 MB smaller app, same look. Made with
+   `ffmpeg -i wallpaper-ink.mp4 -vf scale=1920:1080 -c:v libx264 -preset slow -crf 23 -pix_fmt yuv420p -an -movflags +faststart out.mp4`
 2. **Pause the wallpaper while audio is playing in the background** and when
    Low Power Mode is on.
 3. **Resize the artwork photos** to the square size they are displayed at
